@@ -1,26 +1,45 @@
 import React from 'react'
-import { View, StyleSheet, Text, Button } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  TouchableOpacity
+} from 'react-native'
+
+import { CATEGORIES } from '../data/dummy-data'
 
 // react-navigator is automatically passing a prop to this component
 const CategoriesScreen = props => {
-  return (
-    <View style={styles.screen}>
-      <Text>The Categories Screen!</Text>
-      <Button
-        title='Go to Meals!'
+  const renderGridItem = itemData => {
+    return (
+      <TouchableOpacity
+        style={styles.gridItem}
         onPress={() => {
-          props.navigation.navigate({ routeName: 'CategoryMeals' })
+          props.navigation.navigate({
+            routeName: 'CategoryMeals',
+            params: {
+              categoryId: itemData.item.id
+            }
+          })
         }}
-      />
-    </View>
+      >
+        <View>
+          <Text>{itemData.item.title}</Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+  return (
+    <FlatList data={CATEGORIES} renderItem={renderGridItem} numColumns={2} />
   )
 }
 
 const styles = StyleSheet.create({
-  screen: {
+  gridItem: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    margin: 15,
+    height: 150
   }
 })
 
