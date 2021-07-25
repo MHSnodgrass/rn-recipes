@@ -26,6 +26,7 @@ const MealsNavigator = createStackNavigator(
     MealDetail: MealDetailScreen
   },
   {
+    // Specific navigation options will override defaults
     defaultNavigationOptions: {
       headerStyle: {
         backgroundColor:
@@ -35,6 +36,7 @@ const MealsNavigator = createStackNavigator(
         Platform.OS === 'android' ? 'white' : Colors.primaryColor,
       headerTitleAlign: 'center'
     }
+    // More options can be added here if needed
   }
 )
 

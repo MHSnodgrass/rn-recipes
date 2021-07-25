@@ -4,6 +4,7 @@ import { View, StyleSheet, Text, Button } from 'react-native'
 import { CATEGORIES } from '../data/dummy-data'
 
 const CategoryMealsScreen = props => {
+  // Used to grap data from whatever screen navigated to this one
   const catId = props.navigation.getParam('categoryId')
 
   const selectedCategory = CATEGORIES.find(cat => cat.id === catId)
@@ -19,15 +20,18 @@ const CategoryMealsScreen = props => {
       />
       <Button
         title='Go Back'
+        // goBack goes back to the previous screen in the stack
         onPress={() => {
-          props.navigation.pop()
+          props.navigation.goBack()
         }}
       />
     </View>
   )
 }
 
+// react-navigation automatically passes data that can be accessed outside of the regular component
 CategoryMealsScreen.navigationOptions = navigationData => {
+  //navigationOptions can be used as a function to access navigation data and do things like set styles
   const catId = navigationData.navigation.getParam('categoryId')
   const selectedCategory = CATEGORIES.find(cat => cat.id === catId)
 
