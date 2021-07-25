@@ -8,14 +8,15 @@ import {
 } from 'react-native'
 
 import { CATEGORIES } from '../data/dummy-data'
+import CategoryGridTile from '../components/CategoryGridTile'
 
 // react-navigator is automatically passing navigation props to this component
 const CategoriesScreen = props => {
   const renderGridItem = itemData => {
     return (
-      <TouchableOpacity
-        style={styles.gridItem}
-        onPress={() => {
+      <CategoryGridTile
+        title={itemData.item.title}
+        onSelect={() => {
           props.navigation.navigate({
             // The routeName is what was specified in MealsNavigator
             routeName: 'CategoryMeals',
@@ -25,11 +26,8 @@ const CategoriesScreen = props => {
             }
           })
         }}
-      >
-        <View>
-          <Text>{itemData.item.title}</Text>
-        </View>
-      </TouchableOpacity>
+        color={itemData.item.color}
+      />
     )
   }
   return (
