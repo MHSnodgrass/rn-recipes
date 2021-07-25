@@ -6,7 +6,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 // All of these imports had to be installed via npm separately from react-navigation
 import { createAppContainer } from 'react-navigation'
-import { Platform } from 'react-native'
+import { Platform, NativeModules } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
 import CategoriesScreen from '../screens/CategoriesScreen'
@@ -14,6 +14,11 @@ import CategoryMealsScreens from '../screens/CategoryMealsScreen'
 import MealDetailScreen from '../screens/MealDetailScreen'
 import Colors from '../constants/Colors'
 import FavoritesScreen from '../screens/FavoritesScreen'
+import FiltersScreen from '../screens/FiltersScreen'
+
+// This is a hack, this version of drawer navigator goes into the status bar, this forces it down
+const { StatusBarManager } = NativeModules
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBarManager.HEIGHT
 
 const defaultStackNavOptions = {
   // Specific navigation options will override defaults
@@ -105,4 +110,35 @@ const MealsFavTabNavigator =
         }
       })
 
-export default createAppContainer(MealsFavTabNavigator)
+const FiltersNavigator = createStackNavigator(
+  {
+    Filters: FiltersScreen
+  },
+  { defaultNavigationOptions: defaultStackNavOptions }
+)
+
+const MainNavigator = createDrawerNavigator(
+  {
+    Tabs: {
+      screen: MealsFavTabNavigator,
+      navigationOptions: {
+        drawerLabel: 'Meals'
+      }
+    },
+    Filters: FiltersNavigator
+  },
+  {
+    contentOptions: {
+      activeTintColor: Colors.accentColor,
+      labelStyle: {
+        fontFamily: 'open-sans-bold'
+      },
+      // This is a hack, this version of drawer navigator goes into the status bar, this forces it down
+      itemsContainerStyle: {
+        marginTop: STATUSBAR_HEIGHT
+      }
+    }
+  }
+)
+
+export default createAppContainer(MainNavigator)
