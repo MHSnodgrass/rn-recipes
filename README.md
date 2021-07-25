@@ -1,5 +1,5 @@
 ﻿# Recipe App
- - This is the Second React-Native app I created with Expo following the course React Native - The Practical Guide [2021 Edition] on Udemy by Maximilian Schwarzmüller.
+ - This is the Second React-Native app I created with Expo following the course `React Native - The Practical Guide [2021 Edition]` on Udemy by Maximilian Schwarzmüller.
  - This app is about proper screen navigation using `react-navigation`.
  - The first step was to create multiple screens and learn how to navigate through them via a self created navigator component: `MealsNavigator.js`. We also created dummy-data using a model via a JavaScript class.
  - The second step was to add default styles, along with the `Platform` API to create device specific styles, to each navigation header.
