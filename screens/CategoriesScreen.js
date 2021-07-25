@@ -1,13 +1,9 @@
 import React from 'react'
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Text,
-  TouchableOpacity
-} from 'react-native'
+import { StyleSheet, FlatList, Platform } from 'react-native'
+import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 
 import { CATEGORIES } from '../data/dummy-data'
+import HeaderButton from '../components/HeaderButton'
 import CategoryGridTile from '../components/CategoryGridTile'
 
 // react-navigator is automatically passing navigation props to this component
@@ -37,6 +33,22 @@ const CategoriesScreen = props => {
      */
     <FlatList data={CATEGORIES} renderItem={renderGridItem} numColumns={2} />
   )
+}
+
+CategoriesScreen.navigationOptions = navData => {
+  return {
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title='Menu'
+          iconName={Platform.OS === 'android' ? 'menu-sharp' : 'ios-menu'}
+          onPress={() => {
+            navData.navigation.toggleDrawer()
+          }}
+        />
+      </HeaderButtons>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
