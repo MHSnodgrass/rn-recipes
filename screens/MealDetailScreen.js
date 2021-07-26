@@ -20,6 +20,10 @@ const MealDetailScreen = props => {
   // Using redux to get Meals using useSelector, no filter (getting by id)
   const availableMeals = useSelector(state => state.meals.meals)
   const mealId = props.navigation.getParam('mealId')
+  // .some returns true if it finds even one item in the array that satisfies the condition
+  const currentMealsIsFavorite = useSelector(state =>
+    state.meals.favoriteMeals.some(meal => meal.id === mealId)
+  )
   const selectedMeal = availableMeals.find(meal => meal.id === mealId)
 
   /*
@@ -38,6 +42,10 @@ const MealDetailScreen = props => {
   useEffect(() => {
     props.navigation.setParams({ toggleFav: toggleFavoriteHandler })
   }, [toggleFavoriteHandler])
+
+  useEffect(() => {
+    props.navigation.setParams({ isFav: currentMealsIsFavorite })
+  }, [currentMealsIsFavorite])
 
   return (
     <ScrollView>
@@ -62,6 +70,7 @@ const MealDetailScreen = props => {
 MealDetailScreen.navigationOptions = navigationData => {
   const mealTitle = navigationData.navigation.getParam('mealTitle')
   const toggleFavorite = navigationData.navigation.getParam('toggleFav')
+  const isFavorite = navigationData.navigation.getParam('isFav')
 
   return {
     headerTitle: mealTitle,
@@ -75,7 +84,11 @@ MealDetailScreen.navigationOptions = navigationData => {
        * iconName must match a name in the icon set you selected in your custom header button
        */
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item title='Favorite' iconName='ios-star' onPress={toggleFavorite} />
+        <Item
+          title='Favorite'
+          iconName={isFavorite ? 'ios-star' : 'ios-star-outline'}
+          onPress={toggleFavorite}
+        />
       </HeaderButtons>
     )
   }
