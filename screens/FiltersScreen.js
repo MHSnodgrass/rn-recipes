@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { View, StyleSheet, Text, Platform, Switch } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
+import { useDispatch } from 'react-redux'
 
 import HeaderButton from '../components/HeaderButton'
 import Colors from '../constants/Colors'
+import { setFilters } from '../store/actions/meals'
 
 // Custom component only used inside this component, leaving it here
 const FilterSwitch = props => {
@@ -30,6 +32,8 @@ const FiltersScreen = props => {
   const [isVegan, setIsVegan] = useState(false)
   const [isVegetarian, setIsVegetarian] = useState(false)
 
+  const dispatch = useDispatch()
+
   // Setting an object with current state to pass to params (navigationOptions)
   const saveFilters = useCallback(() => {
     /*
@@ -42,8 +46,9 @@ const FiltersScreen = props => {
       vegan: isVegan,
       vegetarian: isVegetarian
     }
-    console.log(appliedFilters)
-  }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian])
+
+    dispatch(setFilters(appliedFilters))
+  }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian, dispatch])
 
   // Using useEffect to update params for the current screen
   useEffect(() => {
