@@ -11,4 +11,10 @@
 # Recipe App - Second Module
  - This module for the app is about managing state across multiple screens using `Redux`.
  - The first step was to add `Redux` to the project and set up a `store`. We then created an `action` and `reducer` to be able to manage `Meals`, `Favorite Meals`, and `Filtered Meals`. We then replaced the use of `Meals` in the app and instead pointed it to the `Redux store`. We then added functionality to manage `Favorite Meals` using `Redux`.
-- The second step was to update the favorites button to show if the meal was a favorite meal or not using `redux`. We also added some fallback text to inform the user they didn't have any favorites at that time.
+ - The second step was to update the favorites button to show if the meal was a favorite meal or not using `redux`. We also added some fallback text to inform the user they didn't have any favorites at that time.
+ - The last step was to add logic to filter meals using `redux`. We also added fallback text if there was no meals in a category due to the filtering.
+# Some notes
+ - This app is complete. 
+ - There was no focus on make this app responsive (smaller screens, etc).
+ - The module was mostly to teach different styles of navigation `(screen, tab, and drawer)`, state managment using `Redux`, and how to manipulate and use state through the app and through navigation options.
+
