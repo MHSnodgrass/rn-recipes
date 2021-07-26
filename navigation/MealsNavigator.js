@@ -6,7 +6,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 // All of these imports had to be installed via npm separately from react-navigation
 import { createAppContainer } from 'react-navigation'
-import { Platform, NativeModules } from 'react-native'
+import { Platform, NativeModules, Text } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
 import CategoriesScreen from '../screens/CategoriesScreen'
@@ -24,6 +24,14 @@ const defaultStackNavOptions = {
   // Specific navigation options will override defaults
   headerStyle: {
     backgroundColor: Platform.OS === 'android' ? Colors.primaryColor : 'white'
+  },
+  // Used to change all text in any header
+  headerTitleStyle: {
+    fontFamily: 'open-sans-bold'
+  },
+  // Used for IOS to change the back title text style
+  headerBackTitleStyle: {
+    fontFamily: 'open-sans'
   },
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primaryColor
   // More options can be added here if needed
@@ -71,7 +79,14 @@ const bottomTabConfig = {
         )
       },
       // tabBarColor only works in android, and only if it has shifting: true
-      tabBarColor: Colors.primaryColor
+      tabBarColor: Colors.primaryColor,
+      // Only used for android as now way to specifically target the text using materialBottom
+      tabBarLabel:
+        Platform.OS === 'android' ? (
+          <Text style={{ fontFamily: 'open-sans-bold' }}>Meals</Text>
+        ) : (
+          'Meals'
+        )
     }
   },
   Favorites: {
@@ -89,7 +104,13 @@ const bottomTabConfig = {
         )
       },
       // tabBarColor is needed on both tabs to have a nice ripple effect between them
-      tabBarColor: Colors.accentColor
+      tabBarColor: Colors.accentColor,
+      tabBarLabel:
+        Platform.OS === 'android' ? (
+          <Text style={{ fontFamily: 'open-sans-bold' }}>Meals</Text>
+        ) : (
+          'Favorites'
+        )
     }
   }
 }
@@ -106,6 +127,9 @@ const MealsFavTabNavigator =
       })
     : createBottomTabNavigator(bottomTabConfig, {
         tabBarOptions: {
+          labelStyle: {
+            fontFamily: 'open-sans-bold'
+          },
           activeTintColor: Colors.accentColor
         }
       })
