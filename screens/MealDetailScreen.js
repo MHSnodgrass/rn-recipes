@@ -1,10 +1,11 @@
-import React from 'react'
-import { ScrollView, Image, View, StyleSheet, Text, Button } from 'react-native'
+import React, { useEffect, useCallback } from 'react'
+import { ScrollView, Image, View, StyleSheet, Text } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
+import { useSelector, useDispatch } from 'react-redux'
 
-import { MEALS } from '../data/dummy-data'
 import HeaderButton from '../components/HeaderButton'
 import DefaultText from '../components/DefaultText'
+import { toggleFavorite } from '../store/actions/meals'
 
 // Custom component only used inside this component, leaving it here
 const ListItem = props => {
@@ -16,9 +17,27 @@ const ListItem = props => {
 }
 
 const MealDetailScreen = props => {
+  // Using redux to get Meals using useSelector, no filter (getting by id)
+  const availableMeals = useSelector(state => state.meals.meals)
   const mealId = props.navigation.getParam('mealId')
+  const selectedMeal = availableMeals.find(meal => meal.id === mealId)
 
-  const selectedMeal = MEALS.find(meal => meal.id === mealId)
+  /*
+   * Using useDispatch to access the redux action to update favorite meal state
+   * Using it this way as the dispatch must be added to a navigationOption, has to be passed to params first
+   */
+  const dispatch = useDispatch()
+
+  // useCallback will make it so toggleFavoriteHandler will only be recreated when dispatch or mealId changes
+  const toggleFavoriteHandler = useCallback(() => {
+    // toggleFavorite from actions is setting action with this meal id to be used to update state in the store
+    dispatch(toggleFavorite(mealId))
+  }, [dispatch, mealId])
+
+  // useEffect is being used to avoid unnecessary rerenders when updating navigation params
+  useEffect(() => {
+    props.navigation.setParams({ toggleFav: toggleFavoriteHandler })
+  }, [toggleFavoriteHandler])
 
   return (
     <ScrollView>
@@ -41,11 +60,11 @@ const MealDetailScreen = props => {
 }
 
 MealDetailScreen.navigationOptions = navigationData => {
-  const mealId = navigationData.navigation.getParam('mealId')
-  const selectedMeal = MEALS.find(meal => meal.id === mealId)
+  const mealTitle = navigationData.navigation.getParam('mealTitle')
+  const toggleFavorite = navigationData.navigation.getParam('toggleFav')
 
   return {
-    headerTitle: selectedMeal.title,
+    headerTitle: mealTitle,
     // headerRight: () => <Component /> is the new syntax
     headerRight: () => (
       /*
@@ -56,13 +75,7 @@ MealDetailScreen.navigationOptions = navigationData => {
        * iconName must match a name in the icon set you selected in your custom header button
        */
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title='Favorite'
-          iconName='ios-star'
-          onPress={() => {
-            console.log('Mark as favorite!')
-          }}
-        />
+        <Item title='Favorite' iconName='ios-star' onPress={toggleFavorite} />
       </HeaderButtons>
     )
   }
