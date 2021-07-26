@@ -15,6 +15,6 @@
  - The last step was to add logic to filter meals using `redux`. We also added fallback text if there was no meals in a category due to the filtering.
 # Some notes
  - This app is complete. 
- - There was no focus on make this app responsive (smaller screens, etc).
+ - There was no focus on making this app responsive (smaller screens, etc).
  - The module was mostly to teach different styles of navigation `(screen, tab, and drawer)`, state managment using `Redux`, and how to manipulate and use state through the app and through navigation options.
 
